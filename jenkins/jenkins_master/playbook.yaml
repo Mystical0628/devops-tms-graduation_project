@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+  roles:
+    - create_agent_jenkins_user
+    - setup_jenkins_ssh
+    - install_java
+    - install_jenkins

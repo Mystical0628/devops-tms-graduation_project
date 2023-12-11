@@ -1,0 +1,36 @@
+- name: Install OpenSSH
+  apt:
+    name: openssh-server
+    update_cache: yes
+    state: present
+
+- name: Create SSH directory for Agent "{{ inventory_hostname }}"
+  file:
+    mode: '0755'
+    owner: jenkins
+    group: jenkins
+    path: /home/jenkins/.ssh/
+    state: directory
+  when: role == "agent"
+
+- name: Copy SSH public key
+  copy:
+    src: "jenkins_agent_key.pub"
+    dest: /home/jenkins/.ssh/id_rsa.pub
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
+  when: role == "agent"
+
+- name: Add key to authorized keys file
+  authorized_key:
+    user: jenkins
+    state: present
+    key: "{{ lookup('file', './jenkins_agent_key.pub') }}"
+  when: role == "agent"
+
+- name: Restart SSH service
+  service:
+    name: sshd
+    enabled: yes
+    state: restarted

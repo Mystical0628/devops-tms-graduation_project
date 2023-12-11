@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+def init_node(config, hostname, ip, &options)
+    config.vm.define hostname do |node|
+        node.ssh.insert_key = false
+        node.vm.box = "bento/ubuntu-22.04"
+        node.vm.hostname = hostname
+        node.vm.network :private_network, ip: ip
+        # define.vm.network :forwarded_port, guest: 5432, host: "543#{n}"
+
+        node.vm.provider :virtualbox do |v|
+            v.cpus = 1
+            v.memory = 1024
+            v.name = hostname
+        end
+
+        if options != nil then
+            options.call(config, node, hostname, ip)
+        end
+    end
+end
+
+Vagrant.configure("2") do |config|
+    ip_master = "192.168.56.10"
+    ip_agent_1 = "192.168.56.11"
+
+    init_node config, "jenkins-agent-1", ip_agent_1
+
+    init_node config, "jenkins-master", ip_master do |config, node|
+        node.vm.network :forwarded_port, guest: 8080, host: 18080
+        node.vm.provision :ansible do |ansible|
+            ansible.limit = "all"
+            ansible.playbook = "jenkins_master/playbook.yaml"
+            ansible.inventory_path = "hosts.yaml"
+        end
+    end
+end

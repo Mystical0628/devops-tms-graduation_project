@@ -1,0 +1,5 @@
+- name: Create jenkins user for agent "{{ inventory_hostname }}"
+  user:
+    name: jenkins
+    shell: /bin/bash
+  when: role == "agent"
