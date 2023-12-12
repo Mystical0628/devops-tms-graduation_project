@@ -10,6 +10,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
+      sh 'echo $BRANCH_NAME'
         dir('infrastructure') {
 	        sh 'ls'
 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
