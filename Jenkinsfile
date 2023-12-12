@@ -117,5 +117,3 @@ pipeline {
 //     }
   }
 }
-
-view raw
