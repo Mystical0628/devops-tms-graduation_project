@@ -8,24 +8,21 @@ pipeline {
 //   }
 
   stages {
-    stage('Start') {
-      steps {
-        sh 'echo "Start"'
-        sh 'cd infrastructure'
-      }
-    }
-
     stage('Init') {
       steps {
-        sh 'ls'
-        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-        sh 'terraform init -no-color'
+        dir('infrastructure') {
+	        sh 'ls'
+	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
+	        sh 'terraform init -no-color'
+        }
       }
     }
 
     stage('Plan') {
       steps {
-        sh 'terraform plan -no-color -var-file="tfvars/$BRANCH_NAME.tfvars"'
+        dir('infrastructure') {
+          sh 'terraform plan -no-color -var-file="tfvars/$BRANCH_NAME.tfvars"'
+        }
       }
     }
 
@@ -39,13 +36,15 @@ pipeline {
         ok "Apply plan"
       }
       steps {
-        echo 'Apply Accepted'
+	       echo 'Apply Accepted'
       }
     }
 
     stage('Apply') {
       steps {
-        sh 'terraform apply -auto-approve -no-color -var-file="tfvars/$BRANCH_NAME.tfvars"'
+        dir('infrastructure') {
+          sh 'terraform apply -auto-approve -no-color -var-file="tfvars/$BRANCH_NAME.tfvars"'
+        }
       }
     }
 
