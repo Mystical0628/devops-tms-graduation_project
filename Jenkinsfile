@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  tools {
+      maven 'maven3'
+  }
+
   environment {
     TF_IN_AUTOMATION = 'true'
     TF_CLI_CONFIG_FILE = credentials('tf-creds')
