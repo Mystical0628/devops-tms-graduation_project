@@ -8,8 +8,13 @@ variable "vpc_cidr_block" {
   type        = string
 }
 
-variable "subnet_cidr_block" {
-  description = "The AWS Subnet CIDR block"
+variable "subnet_public_cidr_block" {
+  description = "The AWS Subnet public CIDR block"
+  type        = string
+}
+
+variable "subnet_private_cidr_block" {
+  description = "The AWS Subnet private CIDR block"
   type        = string
 }
 
