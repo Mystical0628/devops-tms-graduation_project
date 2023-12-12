@@ -12,6 +12,8 @@ terraform {
     region         = "us-east-1"
     encrypt        = true
     dynamodb_table = "dos15-dubovets-gd-terraform-lock"
+    access_key     = var.access_key
+    secret_key     = var.secret_key
   }
 }
 
