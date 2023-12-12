@@ -7,6 +7,10 @@ pipeline {
 //     AWS_SHARED_CREDENTIALS_FILE='/home/ubuntu/.aws/credentials'
 //   }
 
+	tools {
+		terraform 'terraform'
+	}
+
   stages {
     stage('Init') {
       steps {
