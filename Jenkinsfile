@@ -8,9 +8,15 @@ pipeline {
   }
 
   stages {
+    stage('Start') {
+      steps {
+        sh 'echo "Start"'
+        sh 'cd infrastructure'
+      }
+    }
+
     stage('Init') {
       steps {
-        sh 'cd infrastructure'
         sh 'ls'
         sh 'cat tfvars/$BRANCH_NAME.tfvars'
         sh 'terraform init -no-color'
