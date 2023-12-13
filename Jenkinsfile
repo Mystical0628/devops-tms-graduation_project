@@ -27,12 +27,12 @@ pipeline {
       steps {
         dir('infrastructure') {
           echo "${awsAccessKey}"
-	        sh """ echo "${awsAccessKey}" """
+	        sh " echo \"${awsAccessKey}\" "
 	        sh 'echo "$awsAccessKey"'
 	        sh 'echo $awsAccessKey'
 	        sh 'ls'
 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-	        sh 'terraform init -no-color -backend-config="access_key=${awsAccessKey}" -backend-config="secret_key=<your secret key>"'
+	        sh """terraform init -no-color -backend-config="access_key=${awsAccessKey}" -backend-config="secret_key=<your secret key>" """
         }
       }
     }
