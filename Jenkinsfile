@@ -12,15 +12,15 @@ pipeline {
 	}
 
   stages {
-    stage('Init') {
-      steps {
-        dir('infrastructure') {
-	        sh 'ls'
-	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-	        sh 'terraform init -no-color'
-        }
-      }
-    }
+//     stage('Init') {
+//       steps {
+//         dir('infrastructure') {
+// 	        sh 'ls'
+// 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
+// 	        sh 'terraform init -no-color'
+//         }
+//       }
+//     }
 
     stage('Plan') {
       steps {
