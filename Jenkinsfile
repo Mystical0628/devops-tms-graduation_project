@@ -1,3 +1,14 @@
+def userInput = timeout(time:60, unit:'SECONDS') {
+	input(id: 'awsAccessKey', message: 'AWS Access Key Required', parameters: [
+		[
+			$class: 'TextParameterDefinition',
+			defaultValue: '',
+			description: 'Access Key',
+			name: 'access_key'
+		],
+  ])
+}
+
 pipeline {
   agent any
 
