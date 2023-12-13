@@ -1,4 +1,4 @@
-def userInput = timeout(time:60, unit:'SECONDS') {
+def awsAccessKey = timeout(time:60, unit:'SECONDS') {
 	input(id: 'awsAccessKey', message: 'AWS Access Key Required', parameters: [
 		[
 			$class: 'TextParameterDefinition',
@@ -26,9 +26,10 @@ pipeline {
     stage('Init') {
       steps {
         dir('infrastructure') {
+          sh 'echo "${awsAccessKey}"'
 	        sh 'ls'
 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-	        sh 'terraform init -no-color'
+	        sh 'terraform init -no-color -backend-config="access_key=${awsAccessKey}" -backend-config="secret_key=<your secret key>"'
         }
       }
     }
