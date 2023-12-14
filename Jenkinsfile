@@ -78,7 +78,7 @@ pipeline {
       steps {
         sh """
           aws ec2 wait instance-status-ok \
-            --instance-ids \$(terraform output instance_id-jenkins_agent) \$(terraform output instance_id-nginx) \
+            --instance-ids \$(terraform output -raw instance_id-jenkins_agent) \$(terraform output -raw instance_id-nginx) \
             --region us-east-1a
         """
       }
