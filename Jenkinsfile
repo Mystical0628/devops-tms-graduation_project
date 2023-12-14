@@ -76,11 +76,11 @@ pipeline {
       steps {
         dir('infrastructure') {
           sh """
-            terraform apply \
-              -auto-approve \
-              -no-color \
-              -var-file="tfvars/\$BRANCH_NAME.tfvars" \
-              -var='access_key=${awsAccessKey}' \
+            terraform apply \\
+              -auto-approve \\
+              -no-color
+              -var-file="tfvars/\$BRANCH_NAME.tfvars"
+              -var='access_key=${awsAccessKey}'
               -var='secret_key=${awsSecretKey}'
           """
         }
