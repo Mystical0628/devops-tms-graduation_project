@@ -46,12 +46,11 @@ pipeline {
     stage('Plan') {
       steps {
         dir('infrastructure') {
-          sh '
-            terraform plan \
-              -no-color \
-              -var-file="tfvars/$BRANCH_NAME.tfvars" \
-              -var="access_key=$AWS_SECRET_ACCESS_KEY" \
-              -var="secret_key=$AWS_SECRET_KEY_ID"
+          sh 'terraform plan \
+            -no-color \
+            -var-file="tfvars/$BRANCH_NAME.tfvars" \
+            -var="access_key=$AWS_SECRET_ACCESS_KEY" \
+            -var="secret_key=$AWS_SECRET_KEY_ID"
           '
         }
       }
@@ -74,13 +73,12 @@ pipeline {
     stage('Apply') {
       steps {
         dir('infrastructure') {
-          sh '
-            terraform apply \
-              -auto-approve \
-              -no-color \
-              -var-file="tfvars/\$BRANCH_NAME.tfvars" \
-              -var="access_key=$AWS_SECRET_ACCESS_KEY" \
-              -var="secret_key=$AWS_SECRET_KEY_ID"
+          sh 'terraform apply \
+            -auto-approve \
+            -no-color \
+            -var-file="tfvars/\$BRANCH_NAME.tfvars" \
+            -var="access_key=$AWS_SECRET_ACCESS_KEY" \
+            -var="secret_key=$AWS_SECRET_KEY_ID"
           '
         }
       }
