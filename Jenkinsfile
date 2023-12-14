@@ -51,8 +51,8 @@ pipeline {
             terraform plan \
               -no-color \
               -var-file="tfvars/\$BRANCH_NAME.tfvars" \
-              -var='access_key=\"${awsAccessKey}\"' \
-              -var='secret_key=\"${awsSecretKey}\"'
+              -var='access_key=${awsAccessKey}' \
+              -var='secret_key=${awsSecretKey}'
           """
         }
       }
