@@ -39,7 +39,7 @@ pipeline {
         dir('infrastructure') {
 	        sh 'ls'
 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-	        sh "terraform init -no-color -backend-config=\"access_key=${awsAccessKey}\" -backend-config=\"secret_key=${awsSecretKey}\""
+	        sh "terraform init -reconfigure -no-color -backend-config=\"access_key=${awsAccessKey}\" -backend-config=\"secret_key=${awsSecretKey}\""
         }
       }
     }
@@ -87,14 +87,46 @@ pipeline {
       }
     }
 
-//     stage('Inventory') {
-//       steps {
-//         sh '''printf \\
-//           "\\n$(terraform output -json instance_ips | jq -r \'.[]\')" \\
-//           >> aws_hosts'''
-//       }
-//     }
-//
+    stage('Confirm Ansible') {
+      when {
+        beforeInput true
+        branch "master"
+      }
+      input {
+        message "Do you want to run Ansible?"
+        ok "Run Ansible"
+      }
+      steps {
+        echo 'Ansible Approved'
+      }
+    }
+
+    stage('EC2 Wait') {
+      steps {
+        sh """
+          aws ec2 wait instance-status-ok \
+            --instance-ids $(terraform output instance_id-jenkins_agent) $(terraform output instance_id-nginx) \
+            --region us-east-1a
+        """
+      }
+    }
+
+    stage('Inventory') {
+      steps {
+        dir('infrastructure') {
+	        sh """
+	          printf "
+[jenkins_agents]
+$(terraform output -raw instance_ip-jenkins_agent)
+
+[nginx]
+$(terraform output -raw instance_ip-nginx)
+	          " > ../configure/hosts
+	        """
+	      }
+      }
+    }
+
 
 //
 //     stage('Ansible') {
