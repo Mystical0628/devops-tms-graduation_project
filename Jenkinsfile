@@ -1,39 +1,56 @@
-def awsAccessKey = timeout(time:60, unit:'SECONDS') {
-	input(id: 'awsAccessKey', message: 'AWS Access Key Required', parameters: [
-		[
-			$class: 'TextParameterDefinition',
-			defaultValue: '',
-			description: 'Access Key',
-			name: 'access_key'
-		],
-  ])
-}
-
-def awsSecretKey = timeout(time:60, unit:'SECONDS') {
-	input(id: 'awsSecretKey', message: 'AWS Secret Key Required', parameters: [
-		[
-			$class: 'TextParameterDefinition',
-			defaultValue: '',
-			description: 'Secret Key',
-			name: 'secret_key'
-		],
-  ])
-}
+// def awsAccessKey = timeout(time:60, unit:'SECONDS') {
+// 	input(id: 'awsAccessKey', message: 'AWS Access Key Required', parameters: [
+// 		[
+// 			$class: 'TextParameterDefinition',
+// 			defaultValue: '',
+// 			description: 'Access Key',
+// 			name: 'access_key'
+// 		],
+//   ])
+// }
+//
+// def awsSecretKey = timeout(time:60, unit:'SECONDS') {
+// 	input(id: 'awsSecretKey', message: 'AWS Secret Key Required', parameters: [
+// 		[
+// 			$class: 'TextParameterDefinition',
+// 			defaultValue: '',
+// 			description: 'Secret Key',
+// 			name: 'secret_key'
+// 		],
+//   ])
+// }
 
 pipeline {
   agent any
 
-//   environment {
+  environment {
+    AWS_ACCESS_KEY = credentials('jenkins-aws-secret-key-id')
+    AWS_SECRET_KEY = credentials('jenkins-aws-secret-access-key')
 //     TF_IN_AUTOMATION = 'true'
 //     TF_CLI_CONFIG_FILE = credentials('tf-creds')
 //     AWS_SHARED_CREDENTIALS_FILE='/home/ubuntu/.aws/credentials'
-//   }
+  }
 
 	tools {
 		terraform 'terraform'
 	}
 
   stages {
+    stage('Debug') {
+      steps {
+        dir('infrastructure') {
+          sh 'echo $AWS_ACCESS_KEY'
+          sh 'echo "$AWS_ACCESS_KEY"'
+          sh 'echo ${AWS_ACCESS_KEY}'
+          sh 'echo "${AWS_ACCESS_KEY}"'
+          sh 'echo AWS_SECRET_KEY'
+          sh 'echo "AWS_SECRET_KEY"'
+          sh 'echo ${AWS_SECRET_KEY}'
+          sh 'echo "${AWS_SECRET_KEY}"'
+        }
+      }
+    }
+
     stage('Init') {
       steps {
         dir('infrastructure') {
