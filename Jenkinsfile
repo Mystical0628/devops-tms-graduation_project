@@ -40,6 +40,10 @@ pipeline {
     stage('Debug') {
       steps {
         dir('infrastructure') {
+          sh 'echo $AWS_ACCESS_KEY_ID'
+          sh 'echo "$AWS_ACCESS_KEY_ID"'
+          sh 'echo ${AWS_ACCESS_KEY_ID}'
+          sh 'echo "${AWS_ACCESS_KEY_ID}"'
           sh 'echo $AWS_ACCESS_KEY_TEST'
           sh 'echo "$AWS_ACCESS_KEY_TEST"'
           sh 'echo ${AWS_ACCESS_KEY_TEST}'
