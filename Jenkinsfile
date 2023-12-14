@@ -50,7 +50,7 @@ pipeline {
           sh """
             terraform plan \
               -no-color \
-              -var-file="tfvars/$BRANCH_NAME.tfvars" \
+              -var-file="tfvars/\$BRANCH_NAME.tfvars" \
               -var='access_key=\"${awsAccessKey}\"' \
               -var='secret_key=\"${awsSecretKey}\"'
           """
@@ -79,7 +79,7 @@ pipeline {
             terraform apply \
               -auto-approve \
               -no-color \
-              -var-file="tfvars/$BRANCH_NAME.tfvars" \
+              -var-file="tfvars/\$BRANCH_NAME.tfvars" \
               -var='access_key=\"${awsAccessKey}\"' \
               -var='secret_key=\"${awsSecretKey}\"'
           """
