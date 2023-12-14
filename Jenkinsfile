@@ -24,6 +24,7 @@ pipeline {
   agent any
 
   environment {
+    AWS_ACCESS_KEY_TEST = credentials('aws')
     AWS_ACCESS_KEY = credentials('jenkins-aws-secret-key-id')
     AWS_SECRET_KEY = credentials('jenkins-aws-secret-access-key')
 //     TF_IN_AUTOMATION = 'true'
@@ -39,14 +40,14 @@ pipeline {
     stage('Debug') {
       steps {
         dir('infrastructure') {
+          sh 'echo $AWS_ACCESS_KEY_TEST'
+          sh 'echo "$AWS_ACCESS_KEY_TEST"'
+          sh 'echo ${AWS_ACCESS_KEY_TEST}'
+          sh 'echo "${AWS_ACCESS_KEY_TEST}"'
           sh 'echo $AWS_ACCESS_KEY'
           sh 'echo "$AWS_ACCESS_KEY"'
           sh 'echo ${AWS_ACCESS_KEY}'
           sh 'echo "${AWS_ACCESS_KEY}"'
-          sh 'echo AWS_SECRET_KEY'
-          sh 'echo "AWS_SECRET_KEY"'
-          sh 'echo ${AWS_SECRET_KEY}'
-          sh 'echo "${AWS_SECRET_KEY}"'
         }
       }
     }
