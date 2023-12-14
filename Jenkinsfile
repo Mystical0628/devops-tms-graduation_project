@@ -76,11 +76,11 @@ pipeline {
       steps {
         dir('infrastructure') {
           sh """
-            terraform apply \\
-              -auto-approve \\
-              -no-color
-              -var-file="tfvars/\$BRANCH_NAME.tfvars"
-              -var='access_key=${awsAccessKey}'
+            terraform apply \
+              -auto-approve \
+              -no-color \
+              -var-file="tfvars/\$BRANCH_NAME.tfvars" \
+              -var='access_key=${awsAccessKey}' \
               -var='secret_key=${awsSecretKey}'
           """
         }
@@ -95,27 +95,7 @@ pipeline {
 //       }
 //     }
 //
-//     stage('EC2 Wait') {
-//       steps {
-//         sh '''aws ec2 wait instance-status-ok \\
-//           --instance-ids $(terraform output -json instance_ids | jq -r \'.[]\') \\
-//           --region us-east-1'''
-//       }
-//     }
-//
-//     stage('Validate Ansible') {
-//       when {
-//         beforeInput true
-//         branch "dev"
-//       }
-//       input {
-//         message "Do you want to run Ansible?"
-//         ok "Run Ansible"
-//       }
-//       steps {
-//         echo 'Ansible Approved'
-//           }
-//         }
+
 //
 //     stage('Ansible') {
 //       steps {
