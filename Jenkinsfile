@@ -1,25 +1,3 @@
-// def awsAccessKey = timeout(time:60, unit:'SECONDS') {
-// 	input(id: 'awsAccessKey', message: 'AWS Access Key Required', parameters: [
-// 		[
-// 			$class: 'TextParameterDefinition',
-// 			defaultValue: '',
-// 			description: 'Access Key',
-// 			name: 'access_key'
-// 		],
-//   ])
-// }
-//
-// def awsSecretKey = timeout(time:60, unit:'SECONDS') {
-// 	input(id: 'awsSecretKey', message: 'AWS Secret Key Required', parameters: [
-// 		[
-// 			$class: 'TextParameterDefinition',
-// 			defaultValue: '',
-// 			description: 'Secret Key',
-// 			name: 'secret_key'
-// 		],
-//   ])
-// }
-
 pipeline {
   agent any
 
