@@ -47,12 +47,18 @@ pipeline {
     stage('Plan') {
       steps {
         dir('infrastructure') {
-          sh 'terraform plan -no-color -var-file="tfvars/$BRANCH_NAME.tfvars"'
+          sh """
+            terraform plan \
+              -no-color \
+              -var-file="tfvars/$BRANCH_NAME.tfvars" \
+              -var='access_key=\"${awsAccessKey}\"' \
+              -var='secret_key=\"${awsSecretKey}\"'
+          """
         }
       }
     }
 
-    stage('Validate Apply') {
+    stage('Confirm Apply') {
       when {
         beforeInput true
         branch "master"
