@@ -24,7 +24,8 @@ pipeline {
   agent any
 
   environment {
-     AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+     AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+     AWS_SECRET_KEY_ID = credentials('aws_secret_key_id')
   }
 
 	tools {
@@ -32,35 +33,12 @@ pipeline {
 	}
 
   stages {
-    stage('Debug') {
-      steps {
-        dir('infrastructure') {
-          sh 'echo $AWS_ACCESS_KEY_ID'
-          sh 'echo "$AWS_ACCESS_KEY_ID"'
-          sh 'echo ${AWS_ACCESS_KEY_ID}'
-          sh 'echo "${AWS_ACCESS_KEY_ID}"'
-          sh 'echo $AWS_SECRET_ACCESS_KEY'
-          sh 'echo "$AWS_SECRET_ACCESS_KEY"'
-          sh 'echo ${AWS_SECRET_ACCESS_KEY}'
-          sh 'echo "${AWS_SECRET_ACCESS_KEY}"'
-//           sh 'echo $AWS_ACCESS_KEY_TEST'
-//           sh 'echo "$AWS_ACCESS_KEY_TEST"'
-//           sh 'echo ${AWS_ACCESS_KEY_TEST}'
-//           sh 'echo "${AWS_ACCESS_KEY_TEST}"'
-//           sh 'echo $AWS_ACCESS_KEY'
-//           sh 'echo "$AWS_ACCESS_KEY"'
-//           sh 'echo ${AWS_ACCESS_KEY}'
-//           sh 'echo "${AWS_ACCESS_KEY}"'
-        }
-      }
-    }
-
     stage('Init') {
       steps {
         dir('infrastructure') {
 	        sh 'ls'
 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-	        sh "terraform init -reconfigure -no-color -backend-config=\"access_key=${awsAccessKey}\" -backend-config=\"secret_key=${awsSecretKey}\""
+	        sh "terraform init -reconfigure -no-color -backend-config=\"access_key=$AWS_SECRET_ACCESS_KEY\" -backend-config=\"secret_key=$AWS_SECRET_KEY_ID\""
         }
       }
     }
@@ -72,8 +50,8 @@ pipeline {
             terraform plan \
               -no-color \
               -var-file="tfvars/\$BRANCH_NAME.tfvars" \
-              -var='access_key=${awsAccessKey}' \
-              -var='secret_key=${awsSecretKey}'
+              -var='access_key=$AWS_SECRET_ACCESS_KEY' \
+              -var='secret_key=$AWS_SECRET_KEY_ID'
           """
         }
       }
@@ -101,8 +79,8 @@ pipeline {
               -auto-approve \
               -no-color \
               -var-file="tfvars/\$BRANCH_NAME.tfvars" \
-              -var='access_key=${awsAccessKey}' \
-              -var='secret_key=${awsSecretKey}'
+              -var='access_key=$AWS_SECRET_ACCESS_KEY' \
+              -var='secret_key=$AWS_SECRET_KEY_ID'
           """
         }
       }
