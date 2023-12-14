@@ -38,7 +38,7 @@ pipeline {
         dir('infrastructure') {
 	        sh 'ls'
 	        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-	        sh "terraform init -reconfigure -no-color -backend-config=\"access_key=$AWS_SECRET_ACCESS_KEY\" -backend-config=\"secret_key=$AWS_SECRET_KEY_ID\""
+	        sh "terraform init -reconfigure -no-color -backend-config=\"access_key=${AWS_SECRET_ACCESS_KEY}\" -backend-config=\"secret_key=${AWS_SECRET_KEY_ID}\""
         }
       }
     }
