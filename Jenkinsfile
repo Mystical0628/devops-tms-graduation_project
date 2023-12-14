@@ -24,12 +24,7 @@ pipeline {
   agent any
 
   environment {
-     AWS_ACCESS_KEY_TEST = credentials('aws')
-    //AWS_ACCESS_KEY = credentials('jenkins-aws-secret-key-id')
-    //AWS_SECRET_KEY = credentials('jenkins-aws-secret-access-key')
-//     TF_IN_AUTOMATION = 'true'
-//     TF_CLI_CONFIG_FILE = credentials('tf-creds')
-//     AWS_SHARED_CREDENTIALS_FILE='/home/ubuntu/.aws/credentials'
+     AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
   }
 
 	tools {
