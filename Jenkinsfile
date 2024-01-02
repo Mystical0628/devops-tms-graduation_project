@@ -103,12 +103,12 @@ pipeline {
     }
 
 
-//
-//     stage('Ansible') {
-//       steps {
-//         ansiblePlaybook(credentialsId: 'ec2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/docker.yml')
-//       }
-//     }
+
+    stage('Ansible') {
+      steps {
+        ansiblePlaybook(credentialsId: 'ec2-ssh-key', inventory: '../configure/hosts', playbook: '../configure/playbook.yml')
+      }
+    }
 //
 //     stage('Validate Destroy') {
 //       input {
