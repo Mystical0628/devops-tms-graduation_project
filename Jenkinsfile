@@ -106,7 +106,9 @@ pipeline {
 
     stage('Ansible') {
       steps {
-        ansiblePlaybook(credentialsId: 'ec2-ssh-key', inventory: '../configure/hosts', playbook: '../configure/playbook.yml')
+        dir('configure') {
+          ansiblePlaybook(credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'playbook.yml')
+        }
       }
     }
 //
