@@ -8,7 +8,7 @@ pipeline {
 
 	tools {
 		terraform 'terraform'
-		ansible-playbook 'ansible'
+		ansiblePlaybook 'ansible'
 	}
 
   stages {
