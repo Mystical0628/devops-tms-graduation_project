@@ -35,14 +35,14 @@ pipeline {
     }
 
     stage('Confirm Apply') {
-      when {
-        beforeInput true
-        branch "master"
-      }
-      input {
-        message "Do you want to apply this plan?"
-        ok "Apply plan"
-      }
+//       when {
+//         beforeInput true
+//         branch "master"
+//       }
+//       input {
+//         message "Do you want to apply this plan?"
+//         ok "Apply plan"
+//       }
       steps {
 	       echo 'Apply Accepted'
       }
@@ -62,14 +62,14 @@ pipeline {
     }
 
     stage('Confirm Ansible') {
-      when {
-        beforeInput true
-        branch "master"
-      }
-      input {
-        message "Do you want to run Ansible?"
-        ok "Run Ansible"
-      }
+//       when {
+//         beforeInput true
+//         branch "master"
+//       }
+//       input {
+//         message "Do you want to run Ansible?"
+//         ok "Run Ansible"
+//       }
       steps {
         echo 'Ansible Approved'
       }
