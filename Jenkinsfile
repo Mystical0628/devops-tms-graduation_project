@@ -14,12 +14,13 @@ pipeline {
 
   stages {
     stage('Terraform') {
-      input {
-        message "Do you want to run Terraform?"
-        ok "Run Terraform"
-        parameters [booleanParam(name: 'run_terraform', defaultValue: true)]
-        timeout time(seconds: 30)
-      }
+      timeout(time: 30, unit: 'SECONDS') {
+	      input {
+	        message "Do you want to run Terraform?"
+	        ok "Run Terraform"
+	        parameters [booleanParam(name: 'run_terraform', defaultValue: true)]
+	      }
+	    }
       when {
         expression {
           params.skip_test != true
