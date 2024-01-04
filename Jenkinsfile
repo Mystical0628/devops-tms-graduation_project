@@ -21,11 +21,9 @@ pipeline {
 	        parameters [booleanParam(name: 'run_terraform', defaultValue: true)]
 	      }
 	    }
-      when {
-        expression {
-          params.skip_test != true
-        }
-      }
+//       when {
+//         expression params.skip_test != true
+//       }
       stages {
 
 		    stage('Init') {
@@ -76,7 +74,6 @@ pipeline {
 		        }
 		      }
 		    }
-
       }
     }
 
