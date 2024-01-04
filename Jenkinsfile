@@ -17,10 +17,8 @@ pipeline {
       input {
         message "Do you want to run Terraform?"
         ok "Run Terraform"
-        parameters [
-          booleanParam(name: 'run_terraform', defaultValue: true),
-          timeout: time(seconds: 30)
-        ]
+        parameters [booleanParam(name: 'run_terraform', defaultValue: true)],
+        timeout time(seconds: 30)
       }
       when {
         expression {
