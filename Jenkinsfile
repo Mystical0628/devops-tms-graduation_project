@@ -17,7 +17,7 @@ pipeline {
       input {
         message "Do you want to run Terraform?"
         ok "Run Terraform"
-        parameters [booleanParam(name: 'run_terraform', defaultValue: true)]
+        parameters { booleanParam(name: 'run_terraform', defaultValue: true) }
       }
       when {
         expression {
