@@ -4,6 +4,7 @@ pipeline {
   environment {
      AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
      AWS_SECRET_KEY_ID = credentials('aws_secret_key_id')
+     JENKINS_KNOWN_HOSTS = "/var/lib/jenkins/.ssh/known_hosts"
   }
 
 	tools {
@@ -83,6 +84,18 @@ pipeline {
 	            --instance-ids \$(terraform output -raw instance_id-jenkins_agent) \$(terraform output -raw instance_id-nginx) \
 	            --region us-east-1
 	        """
+	      }
+      }
+    }
+
+    stage('SSH Keyscan') {
+      steps {
+        dir('infrastructure') {
+	        sh 'cp $AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY.old'
+	        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> '
+	        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx)'
+	        sh 'echo "\$(terraform output -raw instance_ip-jenkins_agent)"'
+	        sh 'cat $AWS_SECRET_ACCESS_KEY'
 	      }
       }
     }
