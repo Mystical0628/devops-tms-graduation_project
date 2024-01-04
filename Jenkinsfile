@@ -21,7 +21,7 @@ pipeline {
       }
       when {
         expression {
-          params.skip_test != true
+          params.run_terraform == true
         }
       }
       stages {
