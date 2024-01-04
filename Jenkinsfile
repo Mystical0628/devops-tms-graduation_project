@@ -14,21 +14,12 @@ pipeline {
 
   stages {
     stage('Terraform') {
-      stages {
+      input {
+        message "Do you want to run Terraform?"
+        ok "Run Terraform"
+      }
 
-        stage('Confirm Terraform') {
-          when {
-            beforeInput true
-            branch "master"
-          }
-          input {
-            message "Do you want to run Terraform?"
-            ok "Run Terraform"
-          }
-          steps {
-            echo 'Terraform Approved'
-          }
-        }
+      stages {
 
 		    stage('Init') {
 		      steps {
@@ -87,10 +78,6 @@ pipeline {
       stages {
 
 		    stage('Confirm Ansible') {
-		      when {
-		        beforeInput true
-		        branch "master"
-		      }
 		      input {
 		        message "Do you want to run Ansible?"
 		        ok "Run Ansible"
