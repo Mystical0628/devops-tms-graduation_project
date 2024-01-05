@@ -3,4 +3,4 @@
   gather_facts: yes
   become: yes
   roles:
-    - install_jenkins
+    - install_nginx

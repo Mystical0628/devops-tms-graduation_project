@@ -19,6 +19,14 @@
     group: jenkins
     mode: '0644'
 
+- name: Copy SSH private key
+  copy:
+    src: "jenkins_agent_key"
+    dest: /home/jenkins/.ssh/id_rsa
+    owner: jenkins
+    group: jenkins
+    mode: '0600'
+
 - name: Add key to authorized keys file
   authorized_key:
     user: jenkins
