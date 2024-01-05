@@ -12,12 +12,19 @@ pipeline {
     JENKINS_KNOWN_HOSTS = "/var/lib/jenkins/.ssh/known_hosts"
   }
 
-  parameters {
-    booleanParam(name: 'run_terraform', description: 'Run Terraform')
-    booleanParam(name: 'run_ansible', defaultValue: false, description: 'Run Ansible')
-  }
-
   stages {
+    stage('Start') {
+      input {
+        message 'Choose options'
+        ok 'Run'
+			  parameters {
+			    booleanParam(name: 'run_terraform', defaultValue: true, description: 'Run Terraform')
+			    booleanParam(name: 'run_wait_and_acquaint', defaultValue: true, description: 'Wait EC2 and Acquaint')
+			    booleanParam(name: 'run_ansible', defaultValue: true, description: 'Run Ansible')
+			  }
+      }
+    }
+
     stage('Terraform') {
       when {
         expression {
@@ -78,10 +85,10 @@ pipeline {
     }
 
 
-    stage('Ansible') {
+    stage('EC2 Wait and Acquaint') {
       when {
         expression {
-          return params.run_ansible
+          return params.run_wait_and_acquaint
         }
       }
 
@@ -98,7 +105,7 @@ pipeline {
 		      }
 		    }
 
-		    stage('SSH Keyscan') {
+		    stage('Acquaint') {
 		      steps {
 		        dir('infrastructure') {
 // 			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
@@ -109,7 +116,18 @@ pipeline {
 			      }
 		      }
 		    }
+      }
+    }
 
+
+    stage('Ansible') {
+      when {
+        expression {
+          return params.run_ansible
+        }
+      }
+
+      stages {
 		    stage('Inventory') {
 		      steps {
 		        dir('infrastructure') {
@@ -133,7 +151,6 @@ pipeline {
 		        }
 		      }
 		    }
-
       }
     }
 
