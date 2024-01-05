@@ -13,17 +13,29 @@ pipeline {
   }
 
   parameters {
+    booleanParam(name: 'DESTROY_TERRAFORM', defaultValue: false, description: 'Destroy Terraform')
     booleanParam(name: 'RUN_TERRAFORM', defaultValue: false, description: 'Run Terraform')
     booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: false, description: 'Wait EC2 and Acquaint')
     booleanParam(name: 'RUN_ANSIBLE', defaultValue: true, description: 'Run Ansible')
   }
 
   stages {
+    stage('Destroy') {
+      when {
+        expression { return params.DESTROY_TERRAFORM }
+      }
+
+      steps {
+        sh 'terraform destroy \
+          -auto-approve \
+          -no-color \
+          -var-file="tfvars/$BRANCH_NAME.tfvars" '
+      }
+    }
+
     stage('Terraform') {
       when {
-        expression {
-          return params.RUN_TERRAFORM
-        }
+        expression { return params.RUN_TERRAFORM }
       }
 
       stages {
@@ -32,7 +44,11 @@ pipeline {
 		        dir('infrastructure') {
 			        sh 'ls'
 			        sh 'cat tfvars/$BRANCH_NAME.tfvars'
-			        sh 'terraform init -reconfigure -no-color -backend-config="access_key=$AWS_SECRET_ACCESS_KEY" -backend-config="secret_key=$AWS_SECRET_KEY_ID"'
+			        sh 'terraform init \
+			          -reconfigure \
+			          -no-color \
+			          -backend-config="access_key=$AWS_SECRET_ACCESS_KEY" \
+			          -backend-config="secret_key=$AWS_SECRET_KEY_ID" '
 		        }
 		      }
 		    }
@@ -59,7 +75,7 @@ pipeline {
 		        ok "Apply plan"
 		      }
 		      steps {
-			       echo 'Apply Accepted'
+			      echo 'Apply Accepted'
 		      }
 		    }
 
@@ -81,9 +97,7 @@ pipeline {
 
     stage('EC2 Wait and Acquaint') {
       when {
-        expression {
-          return params.RUN_WAIT_AND_ACQUAINT
-        }
+        expression { return params.RUN_WAIT_AND_ACQUAINT }
       }
 
       stages {
@@ -130,9 +144,7 @@ pipeline {
 
     stage('Ansible') {
       when {
-        expression {
-          return params.RUN_ANSIBLE
-        }
+        expression { return params.RUN_ANSIBLE }
       }
 
       parallel {
