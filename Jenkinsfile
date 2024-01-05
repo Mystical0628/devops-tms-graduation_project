@@ -1,31 +1,31 @@
 pipeline {
   agent any
 
+	tools {
+		terraform 'terraform'
+		ansible 'ansible'
+	}
+
   environment {
      AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
      AWS_SECRET_KEY_ID = credentials('aws_secret_key_id')
      JENKINS_KNOWN_HOSTS = "/var/lib/jenkins/.ssh/known_hosts"
   }
 
-	tools {
-		terraform 'terraform'
-		ansible 'ansible'
-	}
+  parameters {
+    booleanParam(name: 'run_terraform', defaultValue: true, description: 'Run Terraform')
+    booleanParam(name: 'run_ansible', defaultValue: true, description: 'Run Ansible')
+  }
 
   stages {
     stage('Terraform') {
-      input {
-        message "Do you want to run Terraform?"
-        ok "Run Terraform"
-        parameters { booleanParam(name: 'run_terraform', defaultValue: true) }
-      }
       when {
         expression {
           params.run_terraform == true
         }
       }
-      stages {
 
+      stages {
 		    stage('Init') {
 		      steps {
 		        dir('infrastructure') {
@@ -48,15 +48,15 @@ pipeline {
 		      }
 		    }
 
-		    stage('Confirm Apply') {
-		//       when {
-		//         beforeInput true
-		//         branch "master"
-		//       }
-		//       input {
-		//         message "Do you want to apply this plan?"
-		//         ok "Apply plan"
-		//       }
+		    stage('Confirm plan') {
+		      when {
+		        beforeInput true
+		        branch "master"
+		      }
+		      input {
+		        message "Do you want to apply this plan?"
+		        ok "Apply plan"
+		      }
 		      steps {
 			       echo 'Apply Accepted'
 		      }
@@ -79,18 +79,13 @@ pipeline {
 
 
     stage('Ansible') {
+      when {
+        expression {
+          params.run_ansible == true
+        }
+      }
+
       stages {
-
-		    stage('Confirm Ansible') {
-		      input {
-		        message "Do you want to run Ansible?"
-		        ok "Run Ansible"
-		      }
-		      steps {
-		        echo 'Ansible Approved'
-		      }
-		    }
-
 		    stage('EC2 Wait') {
 		      steps {
 		        dir('infrastructure') {
