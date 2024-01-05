@@ -1,5 +1,5 @@
 - name: Install OpenSSH
-  yum:
+  dnf:
     name: openssh-server
     update_cache: yes
     state: present

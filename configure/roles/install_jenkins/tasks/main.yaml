@@ -12,6 +12,6 @@
 
 
 - name: Install Jenkins
-  yum:
+  dnf:
     name: jenkins
     update_cache: true
