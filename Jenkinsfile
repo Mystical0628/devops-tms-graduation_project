@@ -13,7 +13,7 @@ pipeline {
   }
 
   parameters {
-    booleanParam(name: 'RUN_TERRAFORM', defaultValue: true, description: 'Run Terraform')
+    booleanParam(name: 'RUN_TERRAFORM', defaultValue: false, description: 'Run Terraform')
     booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: true, description: 'Wait EC2 and Acquaint')
     booleanParam(name: 'RUN_ANSIBLE', defaultValue: true, description: 'Run Ansible')
   }
@@ -102,9 +102,9 @@ pipeline {
 		    stage('Acquaint') {
 		      steps {
 		        dir('infrastructure') {
-// 			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
-// 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> $JENKINS_KNOWN_HOSTS'
-// 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx) >> $JENKINS_KNOWN_HOSTS'
+			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
+			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> $JENKINS_KNOWN_HOSTS'
+			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx) >> $JENKINS_KNOWN_HOSTS'
 			        sh 'echo "\$(terraform output -raw instance_ip-jenkins_agent)"'
 			        sh 'cat $JENKINS_KNOWN_HOSTS'
 			      }
