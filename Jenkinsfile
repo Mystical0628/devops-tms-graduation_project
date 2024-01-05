@@ -18,9 +18,9 @@ pipeline {
         message 'Choose options'
         ok 'Run'
 			  parameters {
-			    booleanParam(name: 'run_terraform', defaultValue: true, description: 'Run Terraform')
-			    booleanParam(name: 'run_wait_and_acquaint', defaultValue: true, description: 'Wait EC2 and Acquaint')
-			    booleanParam(name: 'run_ansible', defaultValue: true, description: 'Run Ansible')
+			    booleanParam(name: 'RUN_TERRAFORM', defaultValue: true, description: 'Run Terraform')
+			    booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: true, description: 'Wait EC2 and Acquaint')
+			    booleanParam(name: 'RUN_ANSIBLE', defaultValue: true, description: 'Run Ansible')
 			  }
       }
 
@@ -32,7 +32,7 @@ pipeline {
     stage('Terraform') {
       when {
         expression {
-          return params.run_terraform
+          return params.RUN_TERRAFORM
         }
       }
 
@@ -92,7 +92,7 @@ pipeline {
     stage('EC2 Wait and Acquaint') {
       when {
         expression {
-          return params.run_wait_and_acquaint
+          return params.RUN_WAIT_AND_ACQUAINT
         }
       }
 
@@ -127,7 +127,7 @@ pipeline {
     stage('Ansible') {
       when {
         expression {
-          return params.run_ansible
+          return params.RUN_ANSIBLE
         }
       }
 
