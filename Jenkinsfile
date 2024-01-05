@@ -140,8 +140,7 @@ pipeline {
 		      steps {
 		        dir('infrastructure') {
 			        sh """
-			          printf "
-all:
+			          printf "all:
   hosts:
     jenkins_agents:
       ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
