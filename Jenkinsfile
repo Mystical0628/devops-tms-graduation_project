@@ -23,6 +23,10 @@ pipeline {
 			    booleanParam(name: 'run_ansible', defaultValue: true, description: 'Run Ansible')
 			  }
       }
+
+      steps {
+        echo 'Start'
+      }
     }
 
     stage('Terraform') {
