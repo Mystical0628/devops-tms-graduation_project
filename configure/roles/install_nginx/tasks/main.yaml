@@ -4,7 +4,7 @@
     state: present
 
 - name: Template a file to /etc/file.conf
-  ansible.builtin.template:
+  template:
     src: nginx.conf.j2
     dest: /etc/nginx/default.d/app.conf
     owner: root

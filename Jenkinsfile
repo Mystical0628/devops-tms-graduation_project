@@ -142,6 +142,9 @@ pipeline {
 			        sh """
 			          printf "all:
   hosts:
+    app:
+      ansible_host: \$(terraform output -raw instance_ip-app)
+
     jenkins_agents:
       ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
 
