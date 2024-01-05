@@ -108,18 +108,7 @@ pipeline {
 			      }
 		      }
 		    }
-      }
-    }
 
-
-    stage('Ansible') {
-      when {
-        expression {
-          return params.RUN_ANSIBLE
-        }
-      }
-
-      stages {
 		    stage('Inventory') {
 		      steps {
 		        dir('infrastructure') {
@@ -135,7 +124,18 @@ pipeline {
 			      }
 		      }
 		    }
+      }
+    }
 
+
+    stage('Ansible') {
+      when {
+        expression {
+          return params.RUN_ANSIBLE
+        }
+      }
+
+      stages {
 		    stage('Playbook') {
 		      steps {
 		        dir('configure') {
