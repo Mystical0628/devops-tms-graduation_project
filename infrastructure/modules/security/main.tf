@@ -1,4 +1,4 @@
-resource "aws_security_group" "main" {
+resource "aws_security_group" "public" {
   vpc_id = var.vpc_id
 
   ingress {
@@ -30,6 +30,28 @@ resource "aws_security_group" "main" {
   }
 
   tags = {
-    Name = "${var.name}-sg"
+    Name = "${var.name}-public-sg"
+  }
+}
+
+resource "aws_security_group" "app" {
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.name}-app-sg"
   }
 }

@@ -43,11 +43,11 @@ resource "aws_instance" "dubovets-gp-ec2-public-jenkins" {
   key_name      = var.instance_key_name
 
   subnet_id                   = module.network.sb_public_id
-  vpc_security_group_ids      = [module.security.sg_id]
+  vpc_security_group_ids      = [module.security.sg_public_id]
   associate_public_ip_address = true
 
   tags = {
-    Name = "dubovets-gp-ec2"
+    Name = "dubovets-gp-ec2-jenkins_agent"
   }
 }
 
@@ -57,10 +57,24 @@ resource "aws_instance" "dubovets-gp-ec2-public-nginx" {
   key_name      = var.instance_key_name
 
   subnet_id                   = module.network.sb_public_id
-  vpc_security_group_ids      = [module.security.sg_id]
+  vpc_security_group_ids      = [module.security.sg_public_id]
   associate_public_ip_address = true
 
   tags = {
-    Name = "dubovets-gp-ec2"
+    Name = "dubovets-gp-ec2-nginx"
+  }
+}
+
+resource "aws_instance" "dubovets-gp-ec2-private-app" {
+  ami           = var.instance_ami
+  instance_type = var.instance_type
+  key_name      = var.instance_key_name
+
+  subnet_id                   = module.network.sb_private_id
+  vpc_security_group_ids      = [module.security.sg_app_id]
+  associate_public_ip_address = false
+
+  tags = {
+    Name = "dubovets-gp-ec2-app"
   }
 }
