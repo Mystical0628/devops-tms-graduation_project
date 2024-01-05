@@ -135,11 +135,19 @@ pipeline {
         }
       }
 
-      stages {
-		    stage('Playbook') {
+      parallel {
+		    stage('Playbook: Jenkins agents') {
 		      steps {
 		        dir('configure') {
-		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'playbook.yaml'
+		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'playbooks/jenkins_agents.yaml'
+		        }
+		      }
+		    }
+
+		    stage('Playbook: Nginx') {
+		      steps {
+		        dir('configure') {
+		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'nginx.yaml'
 		        }
 		      }
 		    }

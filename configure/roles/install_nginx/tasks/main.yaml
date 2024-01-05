@@ -1,0 +1,5 @@
+- name: Install Nginx
+  dnf:
+    state: present
+    name: nginx
+    update_cache: true

@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: jenkins_agents
   gather_facts: yes
   become: yes
   roles:
