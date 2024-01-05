@@ -1,0 +1,7 @@
+- name: Copy hosts
+  copy:
+    src: {{ playbook_dir }}/hosts.yaml
+    dest: /home/jenkins/hosts.yaml
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
