@@ -13,11 +13,3 @@ output "instance_ip-nginx" {
 output "instance_id-nginx" {
   value = aws_instance.dubovets-gp-ec2-public-nginx.id
 }
-
-output "instance_ip-app" {
-  value = aws_instance.dubovets-gp-ec2-private-app.public_ip
-}
-
-output "instance_id-app" {
-  value = aws_instance.dubovets-gp-ec2-private-app.id
-}
