@@ -26,10 +26,12 @@ pipeline {
       }
 
       steps {
-        sh 'terraform destroy \
-          -auto-approve \
-          -no-color \
-          -var-file="tfvars/$BRANCH_NAME.tfvars" '
+		    dir('infrastructure') {
+	        sh 'terraform destroy \
+	          -auto-approve \
+	          -no-color \
+	          -var-file="tfvars/$BRANCH_NAME.tfvars" '
+	      }
       }
     }
 
