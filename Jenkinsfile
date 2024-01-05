@@ -21,7 +21,7 @@ pipeline {
     stage('Terraform') {
       when {
         expression {
-          params.run_terraform == true
+          return params.run_terraform
         }
       }
 
@@ -81,7 +81,7 @@ pipeline {
     stage('Ansible') {
       when {
         expression {
-          params.run_ansible == true
+          return params.run_ansible
         }
       }
 
