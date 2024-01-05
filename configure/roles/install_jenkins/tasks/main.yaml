@@ -1,11 +1,11 @@
 - name: Add Jenkins repository
   block:
-    - name: add key
+    - name: Add key
       rpm_key:
         state: present
         key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
-    - name: add repository
+    - name: Add repository
       get_url:
         url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
         dest: /etc/yum.repos.d/jenkins.repo
