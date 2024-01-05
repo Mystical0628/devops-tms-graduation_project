@@ -110,7 +110,7 @@ pipeline {
 		        dir('infrastructure') {
 			        sh """
 			          aws ec2 wait instance-status-ok \
-			            --instance-ids \$(terraform output -raw instance_id-jenkins_agent) \$(terraform output -raw instance_id-nginx) \
+			            --instance-ids \$(terraform output -raw instance_id-jenkins_agent) \$(terraform output -raw instance_id-nginx) \$(terraform output -raw instance_id-app) \
 			            --region us-east-1
 			        """
 			      }
@@ -123,6 +123,7 @@ pipeline {
 			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> $JENKINS_KNOWN_HOSTS'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx) >> $JENKINS_KNOWN_HOSTS'
+			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-app) >> $JENKINS_KNOWN_HOSTS'
 			      }
 		      }
 		    }
@@ -137,6 +138,9 @@ pipeline {
 
 		[nginx]
 		\$(terraform output -raw instance_ip-nginx)
+
+		[app]
+		\$(terraform output -raw instance_ip-app)
 			          " > ../configure/hosts
 			        """
 			      }
