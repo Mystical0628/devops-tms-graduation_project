@@ -13,8 +13,8 @@ pipeline {
   }
 
   parameters {
-    booleanParam(name: 'run_terraform', defaultValue: true, description: 'Run Terraform')
-    booleanParam(name: 'run_ansible', defaultValue: true, description: 'Run Ansible')
+    booleanParam(name: 'run_terraform', description: 'Run Terraform')
+    booleanParam(name: 'run_ansible', defaultValue: false, description: 'Run Ansible')
   }
 
   stages {
