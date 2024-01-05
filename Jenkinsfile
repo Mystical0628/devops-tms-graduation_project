@@ -7,9 +7,9 @@ pipeline {
 	}
 
   environment {
-     AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
-     AWS_SECRET_KEY_ID = credentials('aws_secret_key_id')
-     JENKINS_KNOWN_HOSTS = "/var/lib/jenkins/.ssh/known_hosts"
+    AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+    AWS_SECRET_KEY_ID = credentials('aws_secret_key_id')
+    JENKINS_KNOWN_HOSTS = "/var/lib/jenkins/.ssh/known_hosts"
   }
 
   parameters {
