@@ -1,6 +1,6 @@
 - name: Copy hosts
   copy:
-    src: {{ playbook_dir }}/hosts.yaml
+    src: "{{ playbook_dir }}/hosts.yaml"
     dest: /home/jenkins/hosts.yaml
     owner: jenkins
     group: jenkins
