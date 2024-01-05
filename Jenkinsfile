@@ -142,13 +142,13 @@ pipeline {
 			        sh """
 			          printf "
 all:
-	hosts:
-		jenkins_agents:
-			ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
+  hosts:
+    jenkins_agents:
+      ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
 
-		nginx:
-	    ansible_host: \$(terraform output -raw instance_ip-nginx)
-	    app_host: \$(terraform output -raw instance_ip-app)
+    nginx:
+      ansible_host: \$(terraform output -raw instance_ip-nginx)
+      app_host: \$(terraform output -raw instance_ip-app)
 			          " > ../configure/hosts.yaml
 			        """
 			      }
