@@ -12,37 +12,13 @@ pipeline {
     JENKINS_KNOWN_HOSTS = "/var/lib/jenkins/.ssh/known_hosts"
   }
 
+  parameters {
+    booleanParam(name: 'RUN_TERRAFORM', defaultValue: true, description: 'Run Terraform')
+    booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: true, description: 'Wait EC2 and Acquaint')
+    booleanParam(name: 'RUN_ANSIBLE', defaultValue: true, description: 'Run Ansible')
+  }
+
   stages {
-    stage('Start') {
-      input {
-        message 'Choose options'
-        ok 'Run'
-			  parameters {
-			    booleanParam(name: 'RUN_TERRAFORM', defaultValue: true, description: 'Run Terraform')
-			    booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: true, description: 'Wait EC2 and Acquaint')
-			    booleanParam(name: 'RUN_ANSIBLE', defaultValue: true, description: 'Run Ansible')
-			  }
-      }
-
-      steps {
-        echo 'Start'
-        echo RUN_TERRAFORM
-        echo RUN_WAIT_AND_ACQUAINT
-        echo "${RUN_WAIT_AND_ACQUAINT}"
-        echo RUN_ANSIBLE
-      }
-    }
-
-    stage('Other') {
-
-      steps {
-        echo 'Start'
-        echo params.RUN_TERRAFORM
-        echo params.RUN_WAIT_AND_ACQUAINT
-        echo params.RUN_ANSIBLE
-      }
-    }
-
     stage('Terraform') {
       when {
         expression {
