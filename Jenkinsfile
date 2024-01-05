@@ -141,7 +141,7 @@ pipeline {
 		        dir('infrastructure') {
 			        sh """
 			          printf "
-	all:
+all:
 	hosts:
 		jenkins_agents:
 			ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
