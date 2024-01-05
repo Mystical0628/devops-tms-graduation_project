@@ -139,7 +139,7 @@ pipeline {
 		    stage('Playbook: Jenkins agents') {
 		      steps {
 		        dir('configure') {
-		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'playbooks/jenkins_agents.yaml'
+		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'jenkins_agents.yaml'
 		        }
 		      }
 		    }
