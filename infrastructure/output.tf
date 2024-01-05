@@ -15,9 +15,9 @@ output "instance_id-nginx" {
 }
 
 output "instance_ip-app" {
-  value = aws_instance.dubovets-gp-ec2-public-nginx.private_ip
+  value = aws_instance.dubovets-gp-ec2-private-app.private_ip
 }
 
 output "instance_id-app" {
-  value = aws_instance.dubovets-gp-ec2-public-nginx.id
+  value = aws_instance.dubovets-gp-ec2-private-app.id
 }
