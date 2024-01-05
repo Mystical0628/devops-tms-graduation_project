@@ -26,9 +26,10 @@ pipeline {
 
       steps {
         echo 'Start'
-        echo params.RUN_TERRAFORM
-        echo params.RUN_WAIT_AND_ACQUAINT
-        echo params.RUN_ANSIBLE
+        echo RUN_TERRAFORM
+        echo RUN_WAIT_AND_ACQUAINT
+        echo "${RUN_WAIT_AND_ACQUAINT}"
+        echo RUN_ANSIBLE
       }
     }
 
@@ -38,6 +39,8 @@ pipeline {
         echo 'Start'
         echo params.RUN_TERRAFORM
         echo params.RUN_WAIT_AND_ACQUAINT
+        echo RUN_WAIT_AND_ACQUAINT
+        echo "${RUN_WAIT_AND_ACQUAINT}"
         echo params.RUN_ANSIBLE
       }
     }
