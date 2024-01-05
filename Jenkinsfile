@@ -105,8 +105,6 @@ pipeline {
 			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> $JENKINS_KNOWN_HOSTS'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx) >> $JENKINS_KNOWN_HOSTS'
-			        sh 'echo "\$(terraform output -raw instance_ip-jenkins_agent)"'
-			        sh 'cat $JENKINS_KNOWN_HOSTS'
 			      }
 		      }
 		    }
@@ -138,7 +136,7 @@ pipeline {
 		      }
 		    }
 
-		    stage('Ansible') {
+		    stage('Playbook') {
 		      steps {
 		        dir('configure') {
 		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'playbook.yaml'
@@ -147,37 +145,11 @@ pipeline {
 		    }
       }
     }
-
-//
-//     stage('Validate Destroy') {
-//       input {
-//         message "Do you want to destroy?"
-//         ok "Destroy"
-//         }
-//       steps {
-//         echo 'Destroy Approved'
-//       }
-//     }
-//
-//     stage('Destroy') {
-//       steps {
-//         sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
-//       }
-//     }
-
   }
 
   post {
     success {
       echo 'Success!'
     }
-
-//     failure {
-//       sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
-//     }
-//
-//     aborted {
-//       sh 'terraform destroy -auto-approve -no-color -var-file="$BRANCH_NAME.tfvars"'
-//     }
   }
 }
