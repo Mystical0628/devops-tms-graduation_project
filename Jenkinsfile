@@ -123,7 +123,6 @@ pipeline {
 			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> $JENKINS_KNOWN_HOSTS'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx) >> $JENKINS_KNOWN_HOSTS'
-			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-app) >> $JENKINS_KNOWN_HOSTS'
 			      }
 		      }
 		    }
