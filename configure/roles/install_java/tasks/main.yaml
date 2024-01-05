@@ -1,5 +1,4 @@
 - name: Install Java
   dnf:
-    state: present
     name: java-17-amazon-corretto-devel
-    update_cache: true
+    state: present

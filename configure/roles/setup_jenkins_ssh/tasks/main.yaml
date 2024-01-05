@@ -1,7 +1,6 @@
 - name: Install OpenSSH
   dnf:
     name: openssh-server
-    update_cache: yes
     state: present
 
 - name: Create SSH directory for Agent "{{ inventory_hostname }}"
