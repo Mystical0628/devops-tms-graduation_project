@@ -1,15 +1,14 @@
 - name: Add Jenkins repository
   block:
     - name: add key
-      get_url:
-        url: https://pkg.jenkins.io/debian/jenkins.io-2023.key
-        dest: /etc/apt/keyrings/jenkins-keyring.asc
+      rpm_key:
+        state: present
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
     - name: add repository
-      apt_repository:
-        repo: deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/
-        state: present
-        filename: jenkins
+      get_url:
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
 
 
 - name: Install Jenkins
