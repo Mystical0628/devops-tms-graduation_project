@@ -127,25 +127,6 @@ pipeline {
 			      }
 		      }
 		    }
-
-		    stage('Inventory') {
-		      steps {
-		        dir('infrastructure') {
-			        sh """
-			          printf "
-all:
-	hosts:
-		jenkins_agents:
-			ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
-
-		nginx:
-    	ansible_host: \$(terraform output -raw instance_ip-nginx)
-    	app_host: \$(terraform output -raw instance_ip-app)
-			          " > ../configure/hosts.yaml
-			        """
-			      }
-		      }
-		    }
       }
     }
 
@@ -155,23 +136,46 @@ all:
         expression { return params.RUN_ANSIBLE }
       }
 
-      parallel {
-		    stage('Playbook: Jenkins agents') {
+			stages {
+		    stage('Inventory') {
 		      steps {
-		        dir('configure') {
-		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'jenkins_agents.yaml'
-		        }
+		        dir('infrastructure') {
+			        sh """
+			          printf "
+	all:
+	hosts:
+		jenkins_agents:
+			ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
+
+		nginx:
+	    ansible_host: \$(terraform output -raw instance_ip-nginx)
+	    app_host: \$(terraform output -raw instance_ip-app)
+			          " > ../configure/hosts.yaml
+			        """
+			      }
 		      }
 		    }
 
-		    stage('Playbook: Nginx') {
-		      steps {
-		        dir('configure') {
-		          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts', playbook: 'nginx.yaml'
-		        }
+				stage('Playbooks') {
+		      parallel {
+				    stage('Playbook: Jenkins agents') {
+				      steps {
+				        dir('configure') {
+				          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts.yaml', playbook: 'jenkins_agents.yaml'
+				        }
+				      }
+				    }
+
+				    stage('Playbook: Nginx') {
+				      steps {
+				        dir('configure') {
+				          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts.yaml', playbook: 'nginx.yaml'
+				        }
+				      }
+				    }
 		      }
 		    }
-      }
+	    }
     }
   }
 
