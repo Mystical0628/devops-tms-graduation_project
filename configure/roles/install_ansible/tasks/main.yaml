@@ -1,0 +1,4 @@
+- name: Install Ansible
+  dnf:
+    name: ansible
+    state: present

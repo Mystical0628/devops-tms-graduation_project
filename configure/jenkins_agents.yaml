@@ -6,6 +6,7 @@
     - create_agent_jenkins_user
     - copy_hosts
     - setup_jenkins_ssh
+    - install_ansible
     - install_git
     - install_java
     - install_jenkins
