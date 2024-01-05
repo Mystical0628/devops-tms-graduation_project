@@ -123,6 +123,7 @@ pipeline {
 			        sh 'cp $JENKINS_KNOWN_HOSTS $JENKINS_KNOWN_HOSTS.old'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-jenkins_agent) >> $JENKINS_KNOWN_HOSTS'
 			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-nginx) >> $JENKINS_KNOWN_HOSTS'
+			        sh 'ssh-keyscan \$(terraform output -raw instance_ip-app) >> $JENKINS_KNOWN_HOSTS'
 			      }
 		      }
 		    }
@@ -132,12 +133,15 @@ pipeline {
 		        dir('infrastructure') {
 			        sh """
 			          printf "
-		[jenkins_agents]
-		\$(terraform output -raw instance_ip-jenkins_agent)
+all:
+	hosts:
+		jenkins_agents:
+			ansible_host: \$(terraform output -raw instance_ip-jenkins_agent)
 
-		[nginx]
-		\$(terraform output -raw instance_ip-nginx)
-			          " > ../configure/hosts
+		nginx:
+    	ansible_host: \$(terraform output -raw instance_ip-nginx)
+    	app_host: \$(terraform output -raw instance_ip-app)
+			          " > ../configure/hosts.yaml
 			        """
 			      }
 		      }

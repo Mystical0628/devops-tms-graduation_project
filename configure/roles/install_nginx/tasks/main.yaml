@@ -2,3 +2,17 @@
   dnf:
     name: nginx
     state: present
+
+- name: Template a file to /etc/file.conf
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/default.d/app.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start Nginx
+  service:
+    name: nginx
+    enabled: yes
+    state: started
