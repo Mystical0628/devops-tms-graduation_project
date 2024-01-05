@@ -14,8 +14,8 @@ pipeline {
 
   parameters {
     booleanParam(name: 'DESTROY_TERRAFORM', defaultValue: false, description: 'Destroy Terraform')
-    booleanParam(name: 'RUN_TERRAFORM', defaultValue: false, description: 'Run Terraform')
-    booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: false, description: 'Wait EC2 and Acquaint')
+    booleanParam(name: 'RUN_TERRAFORM', defaultValue: true, description: 'Run Terraform')
+    booleanParam(name: 'RUN_WAIT_AND_ACQUAINT', defaultValue: true, description: 'Wait EC2 and Acquaint')
     booleanParam(name: 'RUN_ANSIBLE', defaultValue: true, description: 'Run Ansible')
   }
 
