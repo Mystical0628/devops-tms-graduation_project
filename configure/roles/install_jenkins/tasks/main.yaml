@@ -13,6 +13,6 @@
 
 
 - name: Install Jenkins
-  apt:
+  yum:
     name: jenkins
     update_cache: true

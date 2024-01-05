@@ -1,4 +1,4 @@
 - name: Install Java
-  apt:
+  yum:
     name: openjdk-17-jre
     update_cache: true
