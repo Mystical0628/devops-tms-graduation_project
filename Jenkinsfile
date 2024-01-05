@@ -30,7 +30,9 @@ pipeline {
 	        sh 'terraform destroy \
 	          -auto-approve \
 	          -no-color \
-	          -var-file="tfvars/$BRANCH_NAME.tfvars" '
+	          -var-file="tfvars/$BRANCH_NAME.tfvars" \
+		        -var="access_key=$AWS_SECRET_ACCESS_KEY" \
+		        -var="secret_key=$AWS_SECRET_KEY_ID" '
 	      }
       }
     }
