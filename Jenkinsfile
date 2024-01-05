@@ -148,7 +148,7 @@ pipeline {
     nginx:
       ansible_host: \$(terraform output -raw instance_ip-nginx)
       app_host: \$(terraform output -raw instance_ip-app)
-			          " > ../configure/hosts.yaml
+" > ../configure/hosts.yaml
 			        """
 			      }
 		      }
