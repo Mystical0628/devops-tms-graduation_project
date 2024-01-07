@@ -21,6 +21,10 @@ pipeline {
 
   stages {
     stage('Destroy') {
+      tools {
+        terraform 'terraform'
+      }
+
       when {
         expression { return params.DESTROY_TERRAFORM }
       }
@@ -38,12 +42,16 @@ pipeline {
     }
 
     stage('Terraform') {
+      tools {
+        terraform 'terraform'
+      }
+
       when {
         expression { return params.RUN_TERRAFORM }
       }
 
       stages {
-		    stage('Init') {
+		    stage('Terraform: Init') {
 		      steps {
 		        dir('infrastructure') {
 			        sh 'ls'
@@ -57,7 +65,7 @@ pipeline {
 		      }
 		    }
 
-		    stage('Plan') {
+		    stage('Terraform: Plan') {
 		      steps {
 		        dir('infrastructure') {
 		          sh 'terraform plan \
@@ -69,7 +77,7 @@ pipeline {
 		      }
 		    }
 
-		    stage('Confirm plan') {
+		    stage('Terraform: Confirm plan') {
 		      when {
 		        beforeInput true
 		        branch "master"
@@ -83,7 +91,7 @@ pipeline {
 		      }
 		    }
 
-		    stage('Apply') {
+		    stage('Terraform: Apply') {
 		      steps {
 		        dir('infrastructure') {
 		          sh 'terraform apply \
@@ -100,6 +108,10 @@ pipeline {
 
 
     stage('EC2 Wait and Acquaint') {
+      tools {
+        terraform 'terraform'
+      }
+
       when {
         expression { return params.RUN_WAIT_AND_ACQUAINT }
       }
@@ -136,7 +148,11 @@ pipeline {
       }
 
 			stages {
-		    stage('Inventory') {
+		    stage('Ansible: Inventory') {
+          tools {
+            terraform 'terraform'
+          }
+
 		      steps {
 		        dir('infrastructure') {
 			        sh """
@@ -157,9 +173,13 @@ pipeline {
 		      }
 		    }
 
-				stage('Playbooks') {
+				stage('Ansible: Playbooks') {
+          tools {
+            ansible 'ansible'
+          }
+
 		      parallel {
-				    stage('Playbook: Jenkins agents') {
+				    stage('Ansible: Jenkins agents') {
 				      steps {
 				        dir('configure') {
 				          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts.yaml', playbook: 'jenkins_agents.yaml'
@@ -167,7 +187,7 @@ pipeline {
 				      }
 				    }
 
-				    stage('Playbook: Nginx') {
+				    stage('Ansible: Nginx') {
 				      steps {
 				        dir('configure') {
 				          ansiblePlaybook credentialsId: 'ec2-ssh-key', inventory: 'hosts.yaml', playbook: 'nginx.yaml'
