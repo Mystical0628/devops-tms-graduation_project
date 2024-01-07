@@ -143,15 +143,17 @@ pipeline {
 
 
     stage('Ansible') {
+      tools {
+        terraform 'terraform'
+        ansible 'ansible'
+      }
+
       when {
         expression { return params.RUN_ANSIBLE }
       }
 
 			stages {
 		    stage('Ansible: Inventory') {
-          tools {
-            terraform 'terraform'
-          }
 
 		      steps {
 		        dir('infrastructure') {
@@ -174,10 +176,6 @@ pipeline {
 		    }
 
 				stage('Ansible: Playbooks') {
-          tools {
-            ansible 'ansible'
-          }
-
 		      parallel {
 				    stage('Ansible: Jenkins agents') {
 				      steps {
